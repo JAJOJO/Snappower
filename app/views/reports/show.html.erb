@@ -26,37 +26,25 @@
 <% end %>
 
 
-
-
 <br>
 <br>
-array: <%= @test %>
-<br>
-from: <%= @from %>
-<br>
-To: <%= @to %>
-<br>
-<br>
-<!-- <div id="complaint-data" style="display:none"> -->
-<%= @complaint_date_hash.each do |c| %>
-    <br>
-    <br>
-    <%= c %>
+<div class="hidden">
+  array: <%= @test %>
   <br>
-<% end %>
-<!-- </div> -->
+  from: <%= @from %>
+  <br>
+  To: <%= @to %>
+</div>
 
+<div class="hidden">
+  <%= @complaint_date_hash.each do |c| %>
+      <p>
+        <%= c %>
+      </p>
+    <br>
+  <% end %>
+</div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 Complaint Array:<%= @complaint_array %>
 <br>
 Complaint Hash:<%= @complaint_hash %>
@@ -74,33 +62,48 @@ Complaint Hash:<%= @complaint_hash %>
 Action Array:<%= @action_array %>
 <br>
 Action Hash:<%= @action_hash %>
+<div style="width:100%">
+  <canvas id="action-linechart-canvas" height="150" width="600"></canvas>
+</div>
 <div style="width:50%;">
   <canvas id="action-piechart-canvas" width="200" height="200"/>
 </div>
+
+
 <br>
 <br>
 <br>
 Style Array:<%= @style_array %>
 <br>
 Style Hash:<%= @style_hash %>
+<div style="width:100%">
+  <canvas id="style-linechart-canvas" height="150" width="600"></canvas>
+</div>
+<div style="width:50%;">
+  <canvas id="style-piechart-canvas" width="200" height="200"/>
+</div>
 <br>
 <br>
 <br>
 Product Array:<%= @product_array %>
 <br>
 Product Hash:<%= @product_hash %>
+<div style="width:100%">
+  <canvas id="product-linechart-canvas" height="150" width="600"></canvas>
+</div>
+<div style="width:50%;">
+  <canvas id="product-piechart-canvas" width="200" height="200"/>
+</div>
 <br>
 <br>
 <br>
-
-
 <br>
 <br>
 <%= link_to "back", dashboard_path %>
 
 <script>
   $(document).ready(function(){
-    var colors = ['#0085c3','#7ab800','#f2af00','#dc5034','#71c6c1','#ce1126','#009bbb','#b7295a'];
+    var colors = ['#0085c3','#7ab800','#f2af00','#dc5034','#6e2585','#71c6c1','#5482ab','#444444', '#f99104'];
 
     var complaint_array = <%= @complaint_array.to_json.html_safe %>;
     var complaint_hash = <%= @complaint_hash.to_json.html_safe %>;
@@ -110,58 +113,113 @@ Product Hash:<%= @product_hash %>
     var action_hash = <%= @action_hash.to_json.html_safe %>;
     create_chart(action_array, action_hash, "action-piechart-canvas");
 
+    var style_array = <%= @style_array.to_json.html_safe %>;
+    var style_hash = <%= @style_hash.to_json.html_safe %>;
+    create_chart(style_array, style_hash, "style-piechart-canvas");
+
+    var product_array = <%= @product_array.to_json.html_safe %>;
+    var product_hash = <%= @product_hash.to_json.html_safe %>;
+    create_chart(product_array, product_hash, "product-piechart-canvas");
 
 
 
     var complaint_date_hash = <%= @complaint_date_hash.to_json.html_safe %>;
-    console.log(complaint_date_hash);
+    var action_date_hash = <%= @action_date_hash.to_json.html_safe %>;
+    var style_date_hash = <%= @style_date_hash.to_json.html_safe %>;
+    var product_date_hash = <%= @product_date_hash.to_json.html_safe %>;
+
+    //////////array of dates
+    var date_array = [];
     for(var key in complaint_date_hash){
-      console.log(key);
       for(var date in complaint_date_hash[key]){
-        console.log(date + " : " + complaint_date_hash[key][date]) ;
+        date_array.push(date);
       }
+      break;
     }
+    //////////////////////////////
+    create_line_graph(complaint_date_hash,"complaint-linechart-canvas");
+    create_line_graph(action_date_hash,"action-linechart-canvas");
+    create_line_graph(style_date_hash,"style-linechart-canvas");
+    create_line_graph(product_date_hash,"product-linechart-canvas");
+
+
+
 
     ////////////////////////Section for graphs and charts
 
-    //////LineGraph
-    var lineChartData_complaint = {
-      labels : ["January","February","March","April","May","June","July"],
-      datasets : [
-        {
-          label: "My First dataset",
-          strokeColor : "rgba(220,220,220,1)",
-          pointColor : "rgba(220,220,220,1)",
-          pointStrokeColor : "#fff",
-          pointHighlightFill : "#fff",
-          pointHighlightStroke : "rgba(220,220,220,1)",
-          data : [4,2,6,4,5,6,7]
+      //////LineGraph
+      function create_line_graph(hash, id){
+        console.log(hash);
+        var i = 0;
+        var in_function_array2 = []
+        for(var key in hash){
+          var in_function_data_array = [];
+          for(var data2 in hash[key]){
+            in_function_data_array.push(hash[key][data2]);
+          }
+          in_function_array2.push(
+            {
+              label: key,
+              strokeColor : colors[i],
+              // pointColor : colors[i],
+              // pointStrokeColor : colors[i],
+              pointHighlightFill : colors[i],
+              pointHighlightStroke : colors[i],
+              data : in_function_data_array
+            }
+          );
+          i++;
         }
-      ]
-    }
-    var ctx = document.getElementById("complaint-linechart-canvas").getContext("2d");
-		window.myLine = new Chart(ctx).Line(lineChartData_complaint, {
-			responsive: true,
-      bezierCurve : false,
-      datasetFill : false
-		});
-
-    //////PieChart
-    function create_chart(array, hash, id){
-      var in_function_array = [];
-      var i = 0;
-      for(var key in hash){
-        in_function_array.push({
-          value: hash[key],
-          color:colors[i],
-          highlight: "grey",
-          label: key
-        });
-        i++;
+        var lineChartData_complaint = {
+          labels : date_array,
+          datasets : in_function_array2
+        }
+        var ctx = document.getElementById(id).getContext("2d");
+    		window.myLine = new Chart(ctx).Line(lineChartData_complaint, {
+    			responsive: true,
+          bezierCurve : false,
+          datasetFill : false,
+          pointDot : false
+    		});
       }
-      var ctx = document.getElementById(id).getContext("2d");
-      window.myPie = new Chart(ctx).Pie(in_function_array, {
-      });
+
+      //////PieChart
+      function create_chart(array, hash, id){
+        var in_function_array = [];
+        var i = 0;
+        for(var key in hash){
+          in_function_array.push({
+            value: hash[key],
+            color:colors[i],
+            highlight: LightenDarkenColor(colors[i], 50),
+            label: key
+          });
+          i++;
+        }
+        var ctx = document.getElementById(id).getContext("2d");
+        window.myPie = new Chart(ctx).Pie(in_function_array, {
+          animationEasing : "easeOutQuint",
+        });
+      }
+
+      //////////Hex Lightener
+      function LightenDarkenColor(col, amt) {
+        var usePound = false;
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
+        var num = parseInt(col,16);
+        var r = (num >> 16) + amt;
+        if (r > 255) r = 255;
+        else if  (r < 0) r = 0;
+        var b = ((num >> 8) & 0x00FF) + amt;
+        if (b > 255) b = 255;
+        else if  (b < 0) b = 0;
+        var g = (num & 0x0000FF) + amt;
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+        return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     }
 
 

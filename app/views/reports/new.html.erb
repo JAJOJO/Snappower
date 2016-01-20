@@ -14,6 +14,10 @@
     <br>
     <%= f.date_field :date_end %>
     <br>
+
+    Day <%= f.radio_button(:scale, "day") %>
+    Week <%= f.radio_button(:scale, "week") %>
+
   </div>
   <div>
     <%= f.submit "Create new report" %>

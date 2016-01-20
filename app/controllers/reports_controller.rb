@@ -34,7 +34,7 @@ class ReportsController < ApplicationController
     @start = @report.date_beg
     # @to = '2016-01-31'.to_date
     @to = @report.date_end
-    @date_array = Hash.new
+    # @date_array = Hash.new
 
     # array
     #   var this_array = [a,b,c,d]
@@ -48,6 +48,7 @@ class ReportsController < ApplicationController
     # complaint
     @complaint_hash = Hash.new
     @complaint_array = Complaint.uniq.pluck(:name)
+    # @complaint_array = ["Broken Prongs","Other"]
     @complaint_array.each do |c|
       @complaint_hash[c] = Ticket.where(complaint:c).where("created_at >= ?", @report.date_beg).where("created_at <= ?", @report.date_end).count
     end
@@ -67,26 +68,58 @@ class ReportsController < ApplicationController
 
 
 
-
-
-
     @action_hash = Hash.new
     @action_array = Action.uniq.pluck(:name)
     @action_array.each do |c|
       @action_hash[c] = Ticket.where(action:c).where("created_at >= ?", @report.date_beg).where("created_at <= ?", @report.date_end).count
     end
+    @action_date_hash = Hash.new
+    @action_array.each do |c|
+      @action_date_hash[c] = Hash.new
+      @start_temp = @start
+      while @start_temp < @to
+        @action_date_hash[c][@start_temp] =  Ticket.where(action:c).where("created_at >= ?", @start_temp).where("created_at < ?", @start_temp+@scale.days).count
+        @start_temp += @scale.days
+      end
+    end
+
+
+
+
 
     @style_hash = Hash.new
     @style_array = Style.uniq.pluck(:name)
+    # @style_array = ["Wh Du", "Wh De", "Iv Du", "Iv De"]
     @style_array.each do |c|
       @style_hash[c] = Ticket.where(style:c).where("created_at >= ?", @report.date_beg).where("created_at <= ?", @report.date_end).count
     end
+    @style_date_hash = Hash.new
+    @style_array.each do |c|
+      @style_date_hash[c] = Hash.new
+      @start_temp = @start
+      while @start_temp < @to
+        @style_date_hash[c][@start_temp] =  Ticket.where(style:c).where("created_at >= ?", @start_temp).where("created_at < ?", @start_temp+@scale.days).count
+        @start_temp += @scale.days
+      end
+    end
+
+
 
     @product_hash = Hash.new
     @product_array = Product.uniq.pluck(:name)
     @product_array.each do |c|
       @product_hash[c] = Ticket.where(product:c).where("created_at >= ?", @report.date_beg).where("created_at <= ?", @report.date_end).count
     end
+    @product_date_hash = Hash.new
+    @product_array.each do |c|
+      @product_date_hash[c] = Hash.new
+      @start_temp = @start
+      while @start_temp < @to
+        @product_date_hash[c][@start_temp] =  Ticket.where(product:c).where("created_at >= ?", @start_temp).where("created_at < ?", @start_temp+@scale.days).count
+        @start_temp += @scale.days
+      end
+    end
+
 
   end
 

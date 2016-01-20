@@ -1,0 +1,129 @@
+<h2>Dashboard Page.</h2>
+
+<h4>Tickets</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Ticket ID</td>
+    <td>Qty</td>
+    <td>Price</td>
+    <td>Notes</td>
+    <td>Complaint</td>
+    <td>Action</td>
+    <td>Style</td>
+    <td>Product</td>
+  </tr>
+<% @tickets.each do |t| %>
+  <tr>
+    <td><%= t.id %> </td>
+    <td><%= t.quantity %> </td>
+    <td><%= t.price %> </td>
+    <td><%= t.notes %> </td>
+    <td><%= t.complaint %> </td>
+    <td><%= t.action %> </td>
+    <td><%= t.style %> </td>
+    <td><%= t.product %> </td>
+  </tr>
+<% end %>
+</table>
+<%= link_to 'New Ticket', new_ticket_path %>
+
+<br>
+<br>
+<br>
+<h4>Reports</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Report ID</td>
+    <td>Name</td>
+    <td>Beg</td>
+    <td>end</td>
+    <td>View</td>
+  </tr>
+<% @reports.each do |t| %>
+  <tr>
+  <td><%= t.id %> </td>
+  <td><%= t.name %> </td>
+  <td><%= t.date_beg %> </td>
+  <td><%= t.date_end %> </td>
+  <td><%= link_to "See report", report_path(t) %> </td>
+  </tr>
+<% end %>
+</table>
+<%= link_to 'New Report', new_report_path %>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<h4>Complaints</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Complaint ID</td>
+    <td>Name</td>
+  </tr>
+<% @complaints.each do |t| %>
+  <tr>
+  <td><%= t.id %> </td>
+  <td><%= t.name %> </td>
+  </tr>
+<% end %>
+</table>
+<%= link_to 'New Complaint', new_complaint_path %>
+
+<br>
+
+<h4>Actions</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Action ID</td>
+    <td>Name</td>
+  </tr>
+<% @actions.each do |t| %>
+  <tr>
+  <td><%= t.id %> </td>
+  <td><%= t.name %> </td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+<h4>Styles</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Style ID</td>
+    <td>Name</td>
+  </tr>
+<% @styles.each do |t| %>
+  <tr>
+  <td><%= t.id %> </td>
+  <td><%= t.name %> </td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+
+<h4>Products</h4>
+<table style="border:solid black 1px;">
+  <tr style="border:solid black 1px;">
+    <td>Product ID</td>
+    <td>Name</td>
+  </tr>
+<% @products.each do |t| %>
+  <tr>
+  <td><%= t.id %> </td>
+  <td><%= t.name %> </td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+
+
+
+<br>
+<br>
+<br>

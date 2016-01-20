@@ -1,0 +1,13 @@
+<h3>Create New Complaint</h3>
+
+<%= form_for(@complaint) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <br>
+    <%= f.text_area :name %>
+    <br>
+  </div>
+  <div>
+    <%= f.submit "Create new ticket" %>
+  </div>
+<% end %>

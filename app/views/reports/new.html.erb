@@ -1,0 +1,21 @@
+<h3>Create New Report</h3>
+
+<%= form_for(@report) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <br>
+    <%= f.text_area :name %>
+    <br>
+    <%= f.label :date_beg %>
+    <br>
+    <%= f.date_field :date_beg %>
+    <br>
+    <%= f.label :date_end %>
+    <br>
+    <%= f.date_field :date_end %>
+    <br>
+  </div>
+  <div>
+    <%= f.submit "Create new report" %>
+  </div>
+<% end %>

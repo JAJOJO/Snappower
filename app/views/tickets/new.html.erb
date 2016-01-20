@@ -1,0 +1,46 @@
+<h3>Create New Ticket</h3>
+
+<%= form_for(@ticket) do |f| %>
+  <div>
+    <%= f.label :quantity %>
+    <br>
+    <%= f.text_area :quantity %>
+    <br>
+    <%= f.label :price %>
+    <br>
+    <%= f.text_area :price %>
+    <br>
+    <%= f.label :notes %>
+    <br>
+
+    <p>Complaint</p>
+    <%= @complaint_array.each do |c| %>
+      <span><%= c %> <%= f.radio_button(:complaint, c) %></span>&nbsp;&nbsp;&nbsp;
+    <% end %>
+
+    <p>
+      Action
+    </p>
+    <%= @action_array.each do |c| %>
+      <span><%= c %> <%= f.radio_button(:action, c) %></span>&nbsp;&nbsp;&nbsp;
+    <% end %>
+
+    <p>
+      Style
+    </p>
+    <%= @style_array.each do |c| %>
+      <span><%= c %> <%= f.radio_button(:style, c) %></span>&nbsp;&nbsp;&nbsp;
+    <% end %>
+
+    <p>
+      Product
+    </p>
+    <%= @product_array.each do |c| %>
+      <span><%= c %> <%= f.radio_button(:product, c) %></span>&nbsp;&nbsp;&nbsp;
+    <% end %>
+
+  </div>
+  <div>
+    <%= f.submit "Create new ticket" %>
+  </div>
+<% end %>

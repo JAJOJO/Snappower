@@ -1,3 +1,39 @@
 .hidden{
   display: none;
 }
+
+.card{
+  width: 90%;
+  border: solid grey 1px;
+  padding: 10px;
+  margin-bottom:30px;
+  .card-summary{
+    border: solid grey 1px;
+    padding: 10px;
+  }
+}
+
+.pie-holder{
+  padding: 10px;
+  border: solid grey 1px;
+  .pie-legend{
+    border:solid black 1px;
+    border-radius: 2px;
+    .pie-legend-item{
+      margin: 10px;
+      .pie-legend-square{
+        width: 22px;
+        height: 22px;
+        border: solid grey 1px;
+        float: left;
+        margin-right: 5px;
+        font-size: 14px;
+        color:white;
+        text-align: center;
+      }
+      .pie-legend-label{
+        font-size: 16px;
+      }
+    }
+  }
+}
